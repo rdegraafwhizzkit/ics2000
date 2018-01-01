@@ -1,0 +1,10 @@
+{
+    "email":"",
+    "password_hash":"",
+    "mac":"",
+    "gassPrice":0.56840,
+    "kWhHighPrice":0.19367,
+    "kWhLowPrice":0.18008,
+    "period":"P1D",
+    "timezone": "Europe/Amsterdam"
+}

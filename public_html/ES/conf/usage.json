@@ -1,0 +1,26 @@
+{
+    "properties": {
+        "electricityHighkWhCost": {
+            "type": "double"
+        },
+        "electricityLowkWhCost": {
+            "type": "double"
+        },
+        "gassm3Cost": {
+            "type": "double"
+        },
+        "timestamp": {
+            "type": "date",
+            "format": "yyyy-MM-dd HH:mm:ss"
+        },
+        "electricityHighkWh": {
+            "type": "double"
+        },
+        "electricityLowkWh": {
+            "type": "double"
+        },
+        "gassm3": {
+            "type": "double"
+        }
+    }
+}
