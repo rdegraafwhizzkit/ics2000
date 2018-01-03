@@ -1,11 +1,15 @@
 <?php
 
 require_once dirname(__FILE__) . '/classes.php';
-require_once dirname(__FILE__) . '/ES/ESUploader.php';
-require_once dirname(__FILE__) . '/MySQL/MySQLUploader.php';
 
 $conf = json_decode(file_get_contents(dirname(__FILE__) . "/conf/ics2000.json"), true);
 date_default_timezone_set($conf['timezone']);
+
+$iSaveables = array();
+foreach($conf['destinations'] as $iSaveable) {
+    require_once dirname(__FILE__) . '/'.$iSaveable['file'];
+    $iSaveables[]=new $iSaveable['class']();    
+}
 
 $date_end = new DateTime();
 $date_start = clone $date_end;
@@ -32,11 +36,6 @@ curl_setopt($ch, CURLOPT_URL, $url);
 $json = json_decode(curl_exec($ch), true);
 curl_close($ch);
 
-$iSaveables = array(
-    new ESUploader(), 
-    new MySQLUploader()
-);
-
 $prevkWhHigh = 0;
 $prevkWhLow = 0;
 $prevgass = 0;
@@ -48,6 +47,7 @@ foreach ($json as $value) {
     $gass = $value[4];
 
     foreach($iSaveables as $iSaveable) {
+
         $iSaveable->save(new Reading(array(
             "timestamp" => $date_start->format('Y-m-d H:00:00'),
             "electricityHighkWh" => $kWhHigh / 1000,
@@ -55,13 +55,11 @@ foreach ($json as $value) {
             "gassm3" => $gass / 1000
 
         )));
-    }
 
-    if ($prevkWhHigh != 0 && $kWhHigh != 0 && $prevkWhLow != 0 && $kWhLow != 0 && $prevgass != 0 && $gass != 0) {
+        if ($prevkWhHigh != 0 && $kWhHigh != 0 && $prevkWhLow != 0 && $kWhLow != 0 && $prevgass != 0 && $gass != 0) {
 
-        $date_start->sub(new DateInterval('PT1H'));
+            $date_start->sub(new DateInterval('PT1H'));
 
-        foreach($iSaveables as $iSaveable) {
             $iSaveable->save(new Usage(array(
                 "timestamp" => $date_start->format('Y-m-d H:00:00'),
                 "electricityHighkWh" => ($kWhHigh - $prevkWhHigh) / 1000,
@@ -71,9 +69,11 @@ foreach ($json as $value) {
                 "electricityLowkWhCost" => $conf['kWhLowPrice'] * ($kWhLow - $prevkWhLow) / 1000,
                 "gassm3Cost" => $conf['gassPrice'] * ($gass - $prevgass) / 1000
             )));
+
+            $date_start->add(new DateInterval('PT1H'));
+
         }
 
-        $date_start->add(new DateInterval('PT1H'));
     }
 
     $date_start->add(new DateInterval('PT1H'));

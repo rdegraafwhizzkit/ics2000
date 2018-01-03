@@ -41,7 +41,6 @@ class ESUploader implements ISaveable {
         $classname = get_class($object);
         curl_setopt($this->ch, CURLOPT_URL, $this->host . "/" . $this->conf[$classname]['index'] . "/" . $this->conf[$classname]['type'] . "/" . md5($object->timestamp));
         curl_setopt($this->ch, CURLOPT_POSTFIELDS, json_encode($object));
-        echo "Creating entry " . curl_getinfo($this->ch, CURLINFO_EFFECTIVE_URL) . "\n";
         $response = curl_exec($this->ch);
         if (!$response) {
             echo $response . "\n";

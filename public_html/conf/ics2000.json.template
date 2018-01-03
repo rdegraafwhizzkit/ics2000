@@ -6,5 +6,9 @@
     "kWhHighPrice":0.19367,
     "kWhLowPrice":0.18008,
     "period":"P1D",
-    "timezone": "Europe/Amsterdam"
+    "timezone": "Europe/Amsterdam",
+    "destinations":[
+        {"class":"ESUploader","file":"ES/ESUploader.php"},
+        {"class":"MySQLUploader","file":"MySQL/MySQLUploader.php"}
+    ]
 }
