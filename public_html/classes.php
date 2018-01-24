@@ -26,3 +26,11 @@ class Usage {
   public $electricityLowkWhCost;
   public $gassm3Cost;
 }
+
+class Weather {
+  function __construct($parameters = array()) {
+    foreach($parameters as $key => $value) {
+        $this->$key = $value;
+    }
+  }
+}

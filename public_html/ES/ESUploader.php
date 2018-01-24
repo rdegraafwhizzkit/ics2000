@@ -5,25 +5,10 @@ require_once dirname(__FILE__) . '/../ISaveable.php';
 class ESUploader implements ISaveable {
 
     private $ch;
-    private $host;
-
-    private $conf = array(
-        "Reading" => array(
-            "index" => "energy_reading",
-            "type" => "reading",
-            "mapping" => "conf/reading.json"
-        ),
-        "Usage" => array(
-            "index" => "energy_usage",
-            "type" => "usage",
-            "mapping" => "conf/usage.json"
-        )
-    );
 
     function __construct() {
 
-        $conf=json_decode(file_get_contents(dirname(__FILE__) . "/conf/es.json"),true);
-        $this->host=$conf['host'];
+        $this->conf=json_decode(file_get_contents(dirname(__FILE__) . "/conf/es.json"),true);
         $this->ch = curl_init();
         curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "PUT");
@@ -39,7 +24,7 @@ class ESUploader implements ISaveable {
 
     public function save($object) {
         $classname = get_class($object);
-        curl_setopt($this->ch, CURLOPT_URL, $this->host . "/" . $this->conf[$classname]['index'] . "/" . $this->conf[$classname]['type'] . "/" . md5($object->timestamp));
+        curl_setopt($this->ch, CURLOPT_URL, $this->conf['host'] . "/" . $this->conf['indexes'][$classname]['index'] . "/" . $this->conf['indexes'][$classname]['type'] . "/" . md5($object->timestamp));
         curl_setopt($this->ch, CURLOPT_POSTFIELDS, json_encode($object));
         $response = curl_exec($this->ch);
         if (!$response) {
@@ -58,12 +43,12 @@ class ESUploader implements ISaveable {
             'Connection: Keep-Alive'
         ));
 
-        foreach ($this->conf as $classname => $values) {
-            curl_setopt($ch, CURLOPT_URL, $this->host . "/${values['index']}");
+        foreach ($this->conf['indexes'] as $classname => $values) {
+            curl_setopt($ch, CURLOPT_URL, $this->conf['host'] . "/${values['index']}");
             echo "Creating index " . curl_getinfo($ch, CURLINFO_EFFECTIVE_URL) . "\n";
             echo curl_exec($ch) . "\n";
 
-            curl_setopt($ch, CURLOPT_URL, $this->host . "/${values['index']}/_mapping/${values['type']}");
+            curl_setopt($ch, CURLOPT_URL, $this->conf['host'] . "/${values['index']}/_mapping/${values['type']}");
             echo "Creating mapping " . curl_getinfo($ch, CURLINFO_EFFECTIVE_URL) . "\n";
             curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents(dirname(__FILE__) . "/${values['mapping']}"));
             echo curl_exec($ch) . "\n";
@@ -81,8 +66,8 @@ class ESUploader implements ISaveable {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Connection: Keep-Alive'));
 
-        foreach ($this->conf as $classname => $values) {
-            curl_setopt($ch, CURLOPT_URL, $this->host . "/${values['index']}");
+        foreach ($this->conf['indexes'] as $classname => $values) {
+            curl_setopt($ch, CURLOPT_URL, $this->conf['host'] . "/${values['index']}");
             echo "Dropping index " . curl_getinfo($ch, CURLINFO_EFFECTIVE_URL) . "\n";
             echo curl_exec($ch) . "\n";
         }

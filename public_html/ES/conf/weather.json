@@ -1,0 +1,107 @@
+{
+  "properties": {
+    "base": {
+      "type": "text"
+    },
+    "clouds": {
+      "properties": {
+        "all": {
+          "type": "long"
+        }
+      }
+    },
+    "cod": {
+      "type": "long"
+    },
+    "coord": {
+      "properties": {
+        "lat": {
+          "type": "float"
+        },
+        "lon": {
+          "type": "float"
+        }
+      }
+    },
+    "id": {
+      "type": "long"
+    },
+    "main": {
+      "properties": {
+        "humidity": {
+          "type": "long"
+        },
+        "pressure": {
+          "type": "long"
+        },
+        "temp": {
+          "type": "float"
+        },
+        "temp_max": {
+          "type": "long"
+        },
+        "temp_min": {
+          "type": "long"
+        }
+      }
+    },
+    "name": {
+      "type": "text"
+    },
+    "sys": {
+      "properties": {
+        "country": {
+          "type": "text"
+        },
+        "id": {
+          "type": "long"
+        },
+        "message": {
+          "type": "float"
+        },
+        "sunrise": {
+          "type": "long"
+        },
+        "sunset": {
+          "type": "long"
+        },
+        "type": {
+          "type": "long"
+        }
+      }
+    },
+    "timestamp": {
+      "type": "date",
+      "format": "yyyy-MM-dd HH:mm:ss"
+    },
+    "visibility": {
+      "type": "long"
+    },
+    "weather": {
+      "properties": {
+        "description": {
+          "type": "text"
+        },
+        "icon": {
+          "type": "text"
+        },
+        "id": {
+          "type": "long"
+        },
+        "main": {
+          "type": "text"
+        }
+      }
+    },
+    "wind": {
+      "properties": {
+        "deg": {
+          "type": "long"
+        },
+        "speed": {
+          "type": "float"
+        }
+      }
+    }
+  }
+}

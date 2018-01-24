@@ -1,0 +1,7 @@
+{
+    "url":"http://api.openweathermap.org/data/2.5/weather",
+    "id":"2759794",
+    "units":"metric",
+    "appid": "",
+    "timezone": "Europe/Amsterdam"
+}

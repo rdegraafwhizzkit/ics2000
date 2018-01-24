@@ -1,3 +1,20 @@
 {
-    "host": "http://localhost:9200"
+    "host": "http://localhost:9200",
+    "indexes": {
+        "Reading": {
+            "index": "energy_reading",
+            "type": "reading",
+            "mapping": "conf/reading.json"
+        },
+        "Usage": {
+            "index": "energy_usage",
+            "type": "usage",
+            "mapping": "conf/usage.json"
+        },
+        "Weather": {
+            "index": "open_weather_map",
+            "type": "weather",
+            "mapping": "conf/weather.json"
+        }
+    }
 }
