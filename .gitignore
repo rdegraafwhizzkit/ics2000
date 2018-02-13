@@ -1,4 +1,5 @@
 .DS_Store
+.AppleDouble
 nbproject
 test
 public_html/conf/ics2000.json
