@@ -3,5 +3,38 @@
     "port"     : 3306,
     "username" : "ics2000",
     "password" : "",
-    "database" : "ics2000"
+    "database" : "ics2000",
+    "tables": {
+        "Reading": {
+            "table": "energy_reading",
+            "sql": "conf/reading.sql"
+        },
+        "Usage": {
+            "table": "energy_usage",
+            "sql": "conf/usage.sql"
+        },
+        "Weather": {
+            "table": "open_weather_map",
+            "sql": "conf/weather.sql",
+            "mapping":[
+                {"coord_lon":"coord['lon']"},
+                {"coord_lat":"coord['lat']"},
+                {"main_temp":"main['temp']"},
+                {"main_pressure":"main['pressure']"},
+                {"main_humidity":"main['humidity']"},
+                {"main_temp_min":"main['temp_min']"},
+                {"main_temp_max":"main['temp_max']"},
+                {"main_sea_level":"main['sea_level']"},
+                {"main_grnd_level":"main['grnd_level']"},
+                {"wind_speed":"wind['speed']"},
+                {"wind_deg":"wind['deg']"},
+                {"clouds_all":"clouds['all']"},
+                {"rain_3h":"rain['3h']"},
+                {"snow_3h":"snow['3h']"},
+                {"timestamp":"timestamp"},
+                {"city_id":"id"},
+                {"city_name":"name"}
+            ]
+        }
+    }
 }
