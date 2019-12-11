@@ -24,9 +24,13 @@ class ESUploader implements ISaveable {
 
     public function save($object) {
         $classname = get_class($object);
-        curl_setopt($this->ch, CURLOPT_URL, $this->conf['host'] . "/" . $this->conf['indexes'][$classname]['index'] . "/" . $this->conf['indexes'][$classname]['type'] . "/" . md5($object->timestamp));
+        // var_dump($object);
+//        curl_setopt($this->ch, CURLOPT_URL, $this->conf['host'] . "/" . $this->conf['indexes'][$classname]['index'] . "/" . $this->conf['indexes'][$classname]['type'] . "/" . md5($object->timestamp));
+        curl_setopt($this->ch, CURLOPT_CUSTOMREQUEST, "POST");
+        curl_setopt($this->ch, CURLOPT_URL, $this->conf['host'] . "/" . $this->conf['indexes'][$classname]['index'] . "/_doc/" . md5($object->timestamp));
         curl_setopt($this->ch, CURLOPT_POSTFIELDS, json_encode($object));
         $response = curl_exec($this->ch);
+        echo $response;
         if (!$response) {
             echo $response . "\n";
         }
@@ -48,7 +52,7 @@ class ESUploader implements ISaveable {
             echo "Creating index " . curl_getinfo($ch, CURLINFO_EFFECTIVE_URL) . "\n";
             echo curl_exec($ch) . "\n";
 
-            curl_setopt($ch, CURLOPT_URL, $this->conf['host'] . "/${values['index']}/_mapping/${values['type']}");
+            curl_setopt($ch, CURLOPT_URL, $this->conf['host'] . "/${values['index']}/_mapping");
             echo "Creating mapping " . curl_getinfo($ch, CURLINFO_EFFECTIVE_URL) . "\n";
             curl_setopt($ch, CURLOPT_POSTFIELDS, file_get_contents(dirname(__FILE__) . "/${values['mapping']}"));
             echo curl_exec($ch) . "\n";
